@@ -1,0 +1,7 @@
+# python-related things
+**/__pycache__
+*.pyc
+
+# related to packaging
+build/
+dist/

@@ -1,0 +1,39 @@
+
+/************************************************************/
+/*                                                          */
+/* Styles related to table height and sticky column headers */
+/*                                                          */
+/************************************************************/
+
+/* Prevent the preview table from overflowing. */
+div.results {
+    overflow-x: auto;
+    width: 100%;
+}
+
+
+/* Remove the br element in order to facilitate dynamic height calculation. */
+div.results + br.clear {
+    display: none;
+}
+
+
+/* Implement sticky column headers for the preview table. */
+table.import-preview thead th {
+    /* sticky headers */
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+    /* headers should not be covered by other elements (cf. import.css) */
+    z-index: 4;
+    /* no line breaks in the header; additional horizontal spacing instead */
+    white-space: nowrap;
+    padding: 10px;
+}
+
+
+/* Avoid the top and bottom borders of the sticky column headers to "scroll away". */
+table#no-error-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}

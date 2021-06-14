@@ -1,0 +1,4 @@
+include LICENSE
+include README.md
+recursive-include gsheets_import/static *
+recursive-include gsheets_import/templates *
