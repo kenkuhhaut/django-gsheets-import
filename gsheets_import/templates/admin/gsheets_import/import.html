@@ -51,6 +51,11 @@
   <script type="module" src="{% static 'gsheets_import/js/sticky.js' %}"></script>
   {# Load JavaScript's Google API and a custom script to handle the import of Google Sheets #}
   <script src="https://apis.google.com/js/api.js" defer></script>
+  <script>
+    const developerKey = '{{ gsheets_import_api_key }}';
+    const clientId = '{{ gsheets_import_client_id }}';
+    const appId = '{{ gsheets_import_app_id }}';
+  </script>
   <script type="module" src="{% static 'gsheets_import/js/import_gs.js' %}"></script>
 {% endblock %}
 

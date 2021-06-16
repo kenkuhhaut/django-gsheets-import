@@ -24,3 +24,8 @@ class GoogleSheet(base_formats.Format):
 
     def get_read_mode(self):
         return 'r'
+
+
+
+## List of default formats unconditionally extended by the Google Sheet format class
+DEFAULT_FORMATS_EXT = [GoogleSheet, ] + base_formats.DEFAULT_FORMATS

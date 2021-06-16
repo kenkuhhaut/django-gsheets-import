@@ -27,13 +27,6 @@
 'use strict';
 
 //
-// Import project-specific constants
-//
-import { developerKey, clientId, appId } from './gcp_identifiers.js'
-
-
-
-//
 // Template related variables and functions.
 //
 
@@ -47,6 +40,9 @@ const input_os_file = document.getElementById("id_import_file_os_file");
 const input_google_file = document.getElementById("id_import_file_google_id");
 const input_google_oauth = document.getElementById("id_import_file_google_oauth_token");
 const input_is_google = document.getElementById("id_import_file_is_google");
+
+// additional variables 'developerKey', 'clientId', and 'appId' are
+// already set in the 'import.html' template
 
 
 

@@ -5,12 +5,22 @@ from googleapiclient.discovery import build
 
 from django.utils.datastructures import MultiValueDict
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.conf import settings
 
 from import_export.admin import ImportMixin
 
 from . import forms
+from .google_sheet_format import DEFAULT_FORMATS_EXT
 
 
+
+
+## list of names of required settings variables
+SETTINGS_VARS = [
+    'GSHEETS_IMPORT_API_KEY',
+    'GSHEETS_IMPORT_CLIENT_ID',
+    'GSHEETS_IMPORT_APP_ID'
+]
 
 
 
@@ -67,12 +77,26 @@ def download_csv(service, sheet_id, subsheet_name, sheet_name):
 #########################################################################
 
 class ImportGoogleMixin(ImportMixin):
-    # template for import view
+    ## template for import view
     import_template_name = 'admin/gsheets_import/import.html'
+
+    ## available import formats
+    formats = DEFAULT_FORMATS_EXT
 
     ## use the customized import template instead of the default one
     def get_import_form(self):
         return forms.CustomImportForm
+
+    ## add additional context to the import template
+    def get_import_context_data(self, **kwargs):
+        context = super().get_import_context_data(**kwargs)
+        gsheets_import_context = { var.lower(): getattr(settings, var, None) for var in SETTINGS_VARS }
+        failed_settings_vars = [key.upper() for key, value in gsheets_import_context.items() if value is None]
+        if len(failed_settings_vars) > 0:
+            raise AttributeError("Variables in settings.py related to the Google Sheet import app not set correctly (" + ', '.join(failed_settings_vars) + ').')
+        else:
+            context.update(gsheets_import_context)
+            return context
 
 
     ## extended version of the import_action method to download the specified Google Sheet in CSV format
