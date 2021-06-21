@@ -41,7 +41,7 @@ const input_google_file = document.getElementById("id_import_file_google_id");
 const input_google_oauth = document.getElementById("id_import_file_google_oauth_token");
 const input_is_google = document.getElementById("id_import_file_is_google");
 
-// additional variables 'developerKey', 'clientId', and 'appId' are
+// additional variables 'developerKey' and 'clientId' are
 // already set in the 'import.html' template
 
 
@@ -146,10 +146,8 @@ function createPicker() {
         var view = new google.picker.View(google.picker.ViewId.SPREADSHEETS);
         var picker = new google.picker.PickerBuilder()
             .enableFeature(google.picker.Feature.NAV_HIDDEN)
-            .setAppId(appId)
             .setOAuthToken(oauthToken)
             .addView(view)
-            .addView(new google.picker.DocsUploadView())
             .setDeveloperKey(developerKey)
             .setCallback(pickerCallback)
             .build();
