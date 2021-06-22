@@ -3,11 +3,12 @@ from io import StringIO
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
+from django.conf import settings
+from django.contrib import admin
 from django.utils.datastructures import MultiValueDict
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.conf import settings
 
-from import_export.admin import ImportMixin
+from import_export.admin import ImportMixin, ExportMixin
 
 from . import forms
 from .google_sheet_format import DEFAULT_FORMATS_EXT
@@ -128,3 +129,31 @@ class ImportGoogleMixin(ImportMixin):
 
         ## call the parent method with the modified request object
         return super().import_action(request, *args, **kwargs)
+
+
+
+
+#######################################
+#                                     #
+#  A d d i t i o n a l   m i x i n s  #
+#                                     #
+#######################################
+
+class ImportGoogleExportMixin(ImportGoogleMixin, ExportMixin):
+    ## template for change list view
+    change_list_template = 'admin/import_export/change_list_import_export.html'
+
+
+
+
+#####################################################
+#                                                   #
+#  S u b c l a s s e s   o f   M o d e l A d m i n  #
+#                                                   #
+#####################################################
+
+class ImportGoogleModelAdmin(ImportGoogleMixin, admin.ModelAdmin):
+    pass
+
+class ImportGoogleExportModelAdmin(ImportGoogleExportMixin, admin.ModelAdmin):
+    pass
