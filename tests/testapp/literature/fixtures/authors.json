@@ -5,6 +5,7 @@
     "fields": {
         "first_name": "Edgar Allan",
         "last_name": "Poe",
+        "short_name": "E. A. Poe",
         "date_of_birth": "1809-01-19"
     }
 },
@@ -14,6 +15,7 @@
     "fields": {
         "first_name": "Ambrose",
         "last_name": "Bierce",
+        "short_name": "A. Bierce",
         "date_of_birth": "1842-06-24"
     }
 },
@@ -23,6 +25,7 @@
     "fields": {
         "first_name": "Charles",
         "last_name": "Dickens",
+        "short_name": "C. Dickens",
         "date_of_birth": "1812-02-07"
     }
 },
@@ -32,7 +35,18 @@
     "fields": {
         "first_name": "James",
         "last_name": "Joyce",
+        "short_name": "J. Joyce",
         "date_of_birth": "1882-02-02"
+    }
+},
+{
+    "model": "literature.author",
+    "pk": 5,
+    "fields": {
+        "first_name": "Agatha",
+        "last_name": "Christie",
+        "short_name": "A. Christie",
+        "date_of_birth": "1890-09-15"
     }
 }
 ]
