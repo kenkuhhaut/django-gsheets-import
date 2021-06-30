@@ -1,0 +1,46 @@
+[
+{
+    "model": "literature.work",
+    "pk": 1,
+    "fields": {
+        "title": "The Raven",
+        "author": 1,
+        "publication_date": 1845,
+        "form": "PT",
+        "wiki_link": "https://en.wikipedia.org/wiki/The_Raven"
+    }
+},
+{
+    "model": "literature.work",
+    "pk": 2,
+    "fields": {
+        "title": "An Occurrence at Owl Creek Bridge",
+        "author": 2,
+        "publication_date": 1890,
+        "form": "ST",
+        "wiki_link": "https://en.wikipedia.org/wiki/An_Occurrence_at_Owl_Creek_Bridge"
+    }
+},
+{
+    "model": "literature.work",
+    "pk": 3,
+    "fields": {
+        "title": "A Tale of Two Cities",
+        "author": 3,
+        "publication_date": 1859,
+        "form": "NL",
+        "wiki_link": "https://en.wikipedia.org/wiki/A_Tale_of_Two_Cities"
+    }
+},
+{
+    "model": "literature.work",
+    "pk": 4,
+    "fields": {
+        "title": "Finnegans Wake",
+        "author": 4,
+        "publication_date": 1939,
+        "form": "NL",
+        "wiki_link": "https://en.wikipedia.org/wiki/Finnegans_Wake"
+    }
+}
+]

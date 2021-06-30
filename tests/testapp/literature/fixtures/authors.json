@@ -1,0 +1,38 @@
+[
+{
+    "model": "literature.author",
+    "pk": 1,
+    "fields": {
+        "first_name": "Edgar Allan",
+        "last_name": "Poe",
+        "date_of_birth": "1809-01-19"
+    }
+},
+{
+    "model": "literature.author",
+    "pk": 2,
+    "fields": {
+        "first_name": "Ambrose",
+        "last_name": "Bierce",
+        "date_of_birth": "1842-06-24"
+    }
+},
+{
+    "model": "literature.author",
+    "pk": 3,
+    "fields": {
+        "first_name": "Charles",
+        "last_name": "Dickens",
+        "date_of_birth": "1812-02-07"
+    }
+},
+{
+    "model": "literature.author",
+    "pk": 4,
+    "fields": {
+        "first_name": "James",
+        "last_name": "Joyce",
+        "date_of_birth": "1882-02-02"
+    }
+}
+]

@@ -6,3 +6,6 @@
 build/
 dist/
 django_gsheets_import.egg-info/
+
+# miscellaneous
+*.sqlite3
