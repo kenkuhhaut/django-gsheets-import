@@ -19,7 +19,8 @@ from .google_sheet_format import DEFAULT_FORMATS_EXT
 ## list of names of required settings variables
 SETTINGS_VARS = [
     'GSHEETS_IMPORT_API_KEY',
-    'GSHEETS_IMPORT_CLIENT_ID'
+    'GSHEETS_IMPORT_CLIENT_ID',
+    'GSHEETS_IMPORT_APP_ID',
 ]
 
 

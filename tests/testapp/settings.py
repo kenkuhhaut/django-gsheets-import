@@ -123,3 +123,6 @@ GSHEETS_IMPORT_API_KEY = '<API developers key>'
 
 ## The Client ID; see "Client ID" under "APIs & Services" > "Credentials" > "OAuth 2.0 Client IDs"
 GSHEETS_IMPORT_CLIENT_ID = '<OAuth Client ID>'
+
+## The App ID; see "Project Number" under "IAM & Admin" > "Settings"
+GSHEETS_IMPORT_APP_ID = '<App ID>'
