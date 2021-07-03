@@ -1,11 +1,14 @@
-# python-related things
+## python-related things
 **/__pycache__
 *.pyc
 
-# related to packaging
+## related to packaging
 build/
 dist/
 django_gsheets_import.egg-info/
 
-# miscellaneous
+## related to documentation
+docs/_build/
+
+## related to testing
 *.sqlite3
