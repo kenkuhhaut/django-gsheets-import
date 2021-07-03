@@ -2,6 +2,7 @@
 
 The `django-gsheets-import` package is a Django application to facilitate data import from Google Sheets within Django's admin framework.
 It extends the great [`django-import-export`](https://github.com/django-import-export/django-import-export) package, which already provides import and export capabilities for all local file formats supported by [`tablib`](https://github.com/jazzband/tablib).
+Exporting data from Django's admin to Google Sheets is currently not supported but planned for a future release.
 
 
 
@@ -53,9 +54,9 @@ In order to facilitate the interaction of the `django-gsheets-import` package wi
 
 1. Create a **Google Cloud Project**.
 2. Enable the required Google **APIs**, namely the Sheets API as well as the Picker API.
-3. Create and download the required **keys and identifiers** related to the those APIs and the user authentication workflow.
+3. Create and download the required **keys and identifiers** related to those APIs and the user authentication workflow.
 
-In the following we will give step-by-step instructions to complete all of these tasks.
+In the following, we will give step-by-step instructions to complete all of these tasks.
 
 
 ### Create a Google Cloud Project
@@ -71,7 +72,7 @@ In the following we will give step-by-step instructions to complete all of these
 
 * Navigate to `Main Menu > APIs & Services > Library` and select the API you want to enable.
 * For the `django-gsheets-import` package to work properly, you need to enable the **Google Sheets API** as well as the **Google Picker API**.
-* After selecting an API from the library and clicking the `ENABLE` button, you are redirected to an overview page for this API. You can later come back to this page by going to `Main Menu > APIs & Services > Dashboard` and then selecting the API of interest from the table on the bottom.
+* After selecting an API from the library and clicking on the `ENABLE` button, you are redirected to an overview page for this API. You can later come back to this page by going to `Main Menu > APIs & Services > Dashboard` and then selecting the API of interest from the table on the bottom.
 * The aforementioned table lists all of the APIs that are currently enabled for your project. This includes several APIs that are enabled by default (cf. [here](https://cloud.google.com/service-usage/docs/enabled-service#default) in the official documentation), but are not needed for our purposes. It may be wise to disable all of the APIs that are not explicitly needed.
 At least the `django-gsheets-import` package still works with all but the Sheets and Picker APIs disabled.
 
@@ -83,14 +84,14 @@ At least the `django-gsheets-import` package still works with all but the Sheets
   * Restrictions for the newly created API key do not have to be added for the package to work, but should still be implemented for security reasons. Under `Application restrictions`, select `HTTP referrers (websites)` and add an appropriate URL under `Website restrictions`. Under `API restrictions`, select `Restrict key` and choose the Google Picker API from the dropdown menu. The Sheets API does not need the API key and thus does not need to be selected.
 * The implementation of a proper authentication and authorization workflow requires the creation of **OAuth credentials**. Obtaining those is a two-step process: First, we need to configure the OAuth consent screen. Second, we need to create an appropriate OAuth 2.0 client ID.
   1. To configure the **consent screen**, go to `Main Menu > APIs & Services > OAuth consent screen`.
-      * As `User Type` you typically want to choose `External`. Click `CREATE` and fill out the needed information.
+      * As `User Type` you typically want to choose `External`. Click on `CREATE` and fill out the needed information.
       * For `django-gsheets-import` to work properly, you need to add the (non-sensitive) `.../auth/drive.file` scope connected to the Google Sheets API in the next step.
       * Add the email addresses of one or more test users with a valid Google account.
       * To eventually remove the restriction on the number of (test) users, you may want to have your app verified by Google. For more information on the verification process, see [here](https://support.google.com/cloud/answer/9110914), while details on unverified apps can be found [here](https://support.google.com/cloud/answer/7454865).
   2. To create an **OAuth 2.0 client ID**, go to `Main Menu > APIs & Services > Credentials` and click on `CREATE CREDENTIALS` at the top.
       * Select `Web application` as `Application type`.
       * Set the `Authorised JavaScript Origin` to `<Domain>`, where `<Domain>` is typically `http://localhost:8000` for local testing with the Django development server, or your deployment domain under which your web application is reachable. You can also add multiple relevant URIs here.
-* Accessing the selected Google Sheet while only using the non-sensitive `.../auth/drive.file` scope requires the project's **App ID** to be set. It is automatically created with each Google Cloud Project and can be found as `Project number` on your project's dashboard or under the same name at `Main Menu > IAM & Admin > Settings`. 
+* Accessing the selected Google Sheet while only using the non-sensitive `.../auth/drive.file` scope requires the project's **App ID** to be set. It is automatically created with each Google Cloud Project and can be found as `Project number` on your project's dashboard or under the same name at `Main Menu > IAM & Admin > Settings`.
 
 
 
@@ -124,14 +125,14 @@ python manage.py runserver
 ## Getting the demo sheets
 
 We have prepared two read-only sample Google Sheets (one for each model in the demo project), which are publicly available [here](https://docs.google.com/spreadsheets/d/1DG_mR9hYRiVMt_BYIf2zc0fncFhgFQzLKplwHhEM61Q/edit?usp=sharing) and [here](https://docs.google.com/spreadsheets/d/1dIPYFu0alGeAZzFh0E9y4TfnPU7Z4iqlsdh_sLdyZyA/edit?usp=sharing).
-In order to use them with the demo project, click on the links and sign in with your favorite Google Account (if you haven't done so already). The demo sheets should then automatically be available from your that account's Google Drive.
+In order to use them with the demo project, click on the links and sign in with your favorite Google Account (if you haven't done so already). The demo sheets should then automatically be available from that account's Google Drive.
 
 
 ## Running the demo app
 
 Testing the import feature using the demo app typically amounts to the following steps:
 
-* Navigate to `localhost:8000` in your browser and sign in as the Django project's superuser you created above.
+* Navigate to `http://localhost:8000` in your browser and sign in as the Django project's superuser you created above.
 * Both of the models in the project's `literature` app were supplemented by the Google Sheets import functionality. Choose one of the models from the sidebar, which brings you to the admin's changelist view. Here, click on the `IMPORT` button in the top right corner.
 * The `Google Sheet` format is already pre-selected, so click on the `Select a file...` button.
 * From the pop-up window, select the same Google Account which you used to access the sample sheets above.
