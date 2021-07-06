@@ -41,6 +41,24 @@ The demo sheets should then automatically be available from that account's Googl
 
 
 
+Setting up a Google Cloud Project
+=================================
+
+As previously mentioned, the interaction between Django and the user's Google Drive is facilitated by an underlying Google Cloud Project (GCP).
+For now, you will have to create such a project yourself in order to use it with the demo application.
+This is possible with every standard Google Account, does not incur any additional costs and should not take more than a couple of minutes.
+The exact steps to create and set up a GCP for use with ``django-gsheets-import`` are outlined :doc:`here <google_cloud_project>`.
+Once the GCP is ready, you need to retrieve your project's API key, OAuth client ID, and project number and add them to the demo application's configuration file, specifically
+
+.. code-block:: python
+
+    ## in tests/testapp/settings.py
+    GSHEETS_IMPORT_API_KEY = '<Your API developers key>'
+    GSHEETS_IMPORT_CLIENT_ID = '<Your OAuth Client ID>'
+    GSHEETS_IMPORT_APP_ID = '<Your project number>'
+
+
+
 Running the demo app
 ====================
 
@@ -50,7 +68,7 @@ Testing the import feature using the demo app typically amounts to the following
 * Both of the models in the project's ``literature`` app were supplemented by the Google Sheets import functionality. Choose one of the models from the sidebar, which brings you to the admin's changelist view. Here, click on the ``IMPORT`` button in the top right corner.
 * The ``Google Sheet`` format is already pre-selected, so click on the ``Select a file...`` button.
 * From the pop-up window, select the same Google Account which you used to access the sample sheets above.
-* Grant the **Django GSheets Import Demo** application the necessary rights.
+* Grant your previously created Google Cloud Project the necessary rights when prompted.
 * Select the appropriate Google Sheet from the Google Picker window.
 * Click on the ``SUBMIT`` button.
 * If you like what you see, click on the ``CONFIRM IMPORT`` button to have the displayed data added to the underlying database.
@@ -64,26 +82,4 @@ Here, we compile a few more details on the demo project and its implementation.
 
 * As mentioned above, the import functionality was added to both of the models in our demo app. Correspondingly, if you have a look at ``literature/admin.py``, you will find that both the ``AuthorAdmin`` class and the ``WorkAdmin`` class inherit from ``ImportGoogleModelAdmin``.
 * Otherwise, the main work is in implementing an appropriate import resource class for each model, which is done in ``literature/resources.py``. A minimal implementation is used for the ``AuthorResource`` class, while a bit more customization was performed in writing the ``WorkResource`` class. Much more on import resources can be found in the `documentation <https://django-import-export.readthedocs.io/en/latest/>`_ of the ``django-import-export`` package.
-* For the sake of convenience, the Google Sheets import feature in the demo app is by default configured to use an already existing Google Cloud Project named **Django GSheets Import Demo**. If you experience any issues with said default project, it may be due to the fact that you have to share quota with other users. In this case, create your own Google Cloud Project as described above.
-* Under *no* circumstances should you use the aforementioned default Google Cloud Project for your own apps. Rather, you should create a new Google Cloud Project using your own Google Account. Note that all of the Google services needed for the ``django-gsheets-import`` feature to work properly are available within Google Cloud's `Free Tier <https://cloud.google.com/free/>`_. The correct setup is a matter of minutes.
-
-
-
-Privacy policy
-==============
-
-The administrative interface of the demo app (the "App") provides a feature which allows users to import sample data stored in their Google Sheets into the App.
-Said feature relies on Google's `Sheets API <https://developers.google.com/sheets/api/>`_ as well as on the `Picker API <https://developers.google.com/picker/docs>`_.
-It uses internal resources owned by the **Django GSheets Import Demo** project (the "Project") which is hosted on Google's Cloud Platform.
-The aforementioned project name is the one displayed in the consent screen during authentication.
-
-No data about the user's Google account is shared with the App's host, the Project's owners, or any other servers.
-In particular, the user's account password is never transferred to the App or the Project.
-Instead, Google's OAuth server is employed to perform user authentication.
-
-The contents of the selected Google Sheet is transferred to the memory of the App's host and, upon confirmation, permanently stored to the App's database.
-If the import is not confirmed or otherwise aborted, the sheet's contents is not written to the App's database.
-Meta information about the selected Google Sheet, such as its name and the names of its subsheets, are shared with the App's host, but not permanently stored.
-Importantly, during each import process the user grants the described access rights only to the specific Google Sheet selected via the Google Picker dialog.
-No data or metadata about the selected Google Sheet is shared with the Project.
 

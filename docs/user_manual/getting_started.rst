@@ -23,14 +23,15 @@ In order for ``django-gsheets-import`` to work properly, it needs to be associat
 How to properly set up an appropriate GCP using the Google Cloud Console is described in more detail in the corresponding :doc:`section <google_cloud_project>`.
 At this point, let us just note that all of the services needed are available in Google Cloud's `Free Tier <https://cloud.google.com/free/>`_, so that there is no need to set up a billing account.
 Assuming that a suitable GCP already exists, go to the `Google Cloud Console <https://console.cloud.google.com/>`_ and navigate to ``APIs & Services > Credentials``.
-From there, copy the **project number**, an **API key**, as well as the desired **OAuth Client ID** and add them to your ``settings.py``, i.e.
+From there, copy an **API key**, as well as the desired **OAuth Client ID** and add them to your ``settings.py``.
+The required **project number** can be found under ``IAM & Admin > Settings`` and must also be added to ``settings.py``, i.e.
 
 .. code-block:: python
 
     ## in settings.py
-    GSHEETS_IMPORT_APP_ID = '<Your project number>'
     GSHEETS_IMPORT_API_KEY = '<Your API developers key>'
     GSHEETS_IMPORT_CLIENT_ID = '<Your OAuth Client ID>'
+    GSHEETS_IMPORT_APP_ID = '<Your project number>'
 
 The package is now ready to be used with your Django project.
 
