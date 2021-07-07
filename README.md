@@ -1,5 +1,12 @@
 # django-gsheets-import
 
+<!-- Badges -->
+[![PyPI](https://img.shields.io/pypi/v/django-gsheets-import)](https://pypi.org/project/django-gsheets-import/)
+[![Documentation Status](https://readthedocs.org/projects/django-gsheets-import/badge/?version=latest)](https://django-gsheets-import.readthedocs.io/en/latest/?badge=latest)
+![GitHub](https://img.shields.io/github/license/kenkuhhaut/django-gsheets-import)
+<!------------>
+
+
 The `django-gsheets-import` package is a Django application to facilitate data import from Google Sheets within Django's admin framework.
 It extends the great [`django-import-export`](https://github.com/django-import-export/django-import-export) package, which already provides import and export capabilities for all local file formats supported by [`tablib`](https://github.com/jazzband/tablib).
 Exporting data from Django's admin to Google Sheets is currently not supported but planned for a future release.
