@@ -22,10 +22,16 @@
 }
 
 
-/* Make file selection button behave like other buttons in Django admin. */
-.file-google-button:focus,
-.file-google-button:hover {
+/* Make file selection button behave like other buttons in Django admin (if not disabled). */
+.file-google-button:focus:enabled,
+.file-google-button:hover:enabled {
     border-color: var(--body-quiet-color);
+}
+
+
+/* Disabled button styles */
+.file-google-button:disabled {
+    color: #888;
 }
 
 

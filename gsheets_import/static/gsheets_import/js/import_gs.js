@@ -35,13 +35,14 @@
 // relevant input HTML elements for format selection
 const select_format = document.getElementById("id_input_format");
 
-// relevant input HTML elements for file selection
+// relevant HTML elements for file selection
 const button_import = document.getElementById("id_import_file");
 const span_import = document.getElementById("id_import_file_span");
 const input_os_file = document.getElementById("id_import_file_os_file");
 const input_google_file = document.getElementById("id_import_file_google_id");
 const input_google_oauth = document.getElementById("id_import_file_google_oauth_token");
 const input_is_google = document.getElementById("id_import_file_is_google");
+
 
 
 
@@ -119,13 +120,14 @@ function onClientLoad() {
         googleAuth = gapi.auth2.getAuthInstance();
         googleAuth.isSignedIn.listen(updateSignInStatus);
     }).then(function() {
-        // add default 'onClick' event for the button
-        if(button_import) {
-            button_import.addEventListener("click", loadFilePicker);
-        }
         // add 'onChange' event for file input tag
         if(input_os_file) {
             input_os_file.addEventListener("change", updateOSFileName);
+        }
+        // add default 'onClick' event for the button and remove disabled property
+        if(button_import) {
+            button_import.addEventListener("click", loadFilePicker);
+            button_import.disabled = false;
         }
     }).catch(function(error) {
         // error handling
@@ -159,8 +161,6 @@ function loadGooglePicker(event) {
     createPicker();
     console.log("+++ loadGooglePicker 2")
 }
-
-//        'discoveryDocs': discoveryDoc,
 
 
 // Create and render a Picker object.
