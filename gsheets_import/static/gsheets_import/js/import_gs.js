@@ -104,7 +104,6 @@ var googleAuth;
 
 // Load the necessary libraries (executed once "https://apis.google.com/js/api.js" has finished loading)
 function loadLibraries() {
-    console.log("+++ loadLibraries");
     gapi.load('client:auth2', {'callback': onClientLoad});
     gapi.load('picker', {'callback': () => { pickerApiLoaded = true; }});
 }
@@ -143,9 +142,7 @@ function onClientLoad() {
 // Function that is called once the sign-in status changes
 // (argument: true if user is signing in, false if signing out)
 function updateSignInStatus(isSignedIn) {
-    console.log("+++ updateSignInStatus 1" + isSignedIn)
     if(isSignedIn) {
-        console.log("+++ updateSignInStatus 2")
         oauthToken = googleAuth.currentUser.get().getAuthResponse().access_token;
         createPicker();
     }
@@ -155,20 +152,17 @@ function updateSignInStatus(isSignedIn) {
 // Start the OAuth 2.0 authentication flow if the user is not signed in yet
 function loadGooglePicker(event) {
     var isSignedIn = googleAuth.isSignedIn.get();
-    console.log("+++ loadGooglePicker 1" + isSignedIn)
     if(isSignedIn) {
         oauthToken = googleAuth.currentUser.get().getAuthResponse().access_token;
     } else {
         googleAuth.signIn();
     }
     createPicker();
-    console.log("+++ loadGooglePicker 2")
 }
 
 
 // Create and render a Picker object.
 function createPicker() {
-    console.log("+++ pickerApiLoaded: " + pickerApiLoaded + " oauthToken: " + oauthToken);
     if(pickerApiLoaded && oauthToken) {
         var view = new google.picker.View(google.picker.ViewId.SPREADSHEETS);
         var picker = new google.picker.PickerBuilder()
@@ -187,10 +181,15 @@ function createPicker() {
 // Function to call once the picker was successfully built.
 function pickerCallback(data) {
     if(data.action == google.picker.Action.PICKED) {
+        // disable submit button temporarily
+        const button_submit = document.querySelector("input[type=submit]");
+        button_submit.disabled = true;
+
+        // update information in HTML elements according to selected file
         input_google_file_id.value = data.docs[0].id;
         input_google_file_name.value = data.docs[0].name;
         input_google_oauth.value = oauthToken;
-        span_import.innerHTML = data.docs[0].name + " (1st sheet)";
+        span_import.innerHTML = data.docs[0].name;
 
         // display all subsheets
         gapi.client.sheets.spreadsheets.get({
@@ -201,8 +200,8 @@ function pickerCallback(data) {
                 var opt = document.createElement("option");
                 opt.text = subsheet_meta.properties.title;
                 select_subsheet.appendChild(opt);
-                console.log(subsheet_meta.properties.title)
             }
+            button_submit.disabled = false;
         }).catch(function(response) {
             console.log('Error: ' + response.result.error.message);
         });
