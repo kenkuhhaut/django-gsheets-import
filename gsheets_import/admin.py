@@ -23,6 +23,15 @@ SETTINGS_VARS = [
     'GSHEETS_IMPORT_APP_ID',
 ]
 
+## list of keys that need to exist in the POST request data
+POST_REQUEST_KEYS = [
+    'google_file_id',
+    'google_file_name',
+    'oauth_token',
+    'subsheet_name',
+]
+
+
 
 
 ###############################################################
@@ -30,20 +39,6 @@ SETTINGS_VARS = [
 #  G o o g l e   S h e e t   i m p o r t   f u n c t i o n s  #
 #                                                             #
 ###############################################################
-
-
-## get the names of all subsheets within the given Google Sheet
-def get_subsheets_names(service, sheet_id):
-    ## extract metadata from specified sheet
-    result_dict = service.spreadsheets().get(
-        spreadsheetId = sheet_id
-    ).execute()
-    ## get the sheet name (file name)
-    sheet_name = result_dict.get('properties', {}).get('title')
-    ## get the names of the subsheets (tab names)
-    subsheets_info = result_dict.get('sheets', None)
-    if subsheets_info is not None:
-        return ([info.get('properties', {}).get('title') for info in subsheets_info], sheet_name)
 
 
 ## download the given sheet's content as an in-memory CSV file to the server
@@ -96,6 +91,7 @@ class ImportGoogleMixin(ImportMixin):
         if len(failed_settings_vars) > 0:
             raise AttributeError("Variables in settings.py related to the Google Sheet import app not set correctly (" + ', '.join(failed_settings_vars) + ').')
         else:
+            context['dummy_choice_txt'] = forms.DUMMY_CHOICE_TXT
             context.update(gsheets_import_context)
             return context
 
@@ -105,20 +101,19 @@ class ImportGoogleMixin(ImportMixin):
         ## process google sheet
         if request.POST and request.POST.get('is_google') == 'true':
             ## only proceed if the required data was sent and is not empty
-            if all([ (key in request.POST) and (request.POST[key] != '') for key in ['google_file_id', 'oauth_token'] ]):
-                ## extract information about file ('file_id') and user authorization ('oauth_token')
+            if all([ (key in request.POST) and (request.POST[key] != '') for key in POST_REQUEST_KEYS ]):
+                ## extract information about file ('file_id', 'file_name', and 'subsheet_name') and user authorization ('oauth_token')
                 file_id = request.POST['google_file_id']
+                file_name = request.POST['google_file_name']
                 oauth_token = request.POST['oauth_token']
+                subsheet_name = request.POST['subsheet_name']
 
                 ## create sheets service using the provided OAuth 2.0 token
                 creds = Credentials(oauth_token)
                 sheets_service = build('sheets', 'v4', credentials=creds)
 
-                ## extract subsheet names from selected Google Sheet
-                subsheet_names, sheet_name = get_subsheets_names(sheets_service, file_id)
-
                 ## download the specified sheet to an in-memory file
-                sheet_file = download_csv(sheets_service, file_id, subsheet_names[0], sheet_name)
+                sheet_file = download_csv(sheets_service, file_id, subsheet_name, file_name)
 
                 ## NB: The request.FILES property cannot be set for an object of WSGIRequest;
                 ## set the _files attribute instead, which might not be the most elegant way... (rather implement custom upload handler?)

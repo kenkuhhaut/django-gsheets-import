@@ -39,10 +39,13 @@ const select_format = document.getElementById("id_input_format");
 const button_import = document.getElementById("id_import_file");
 const span_import = document.getElementById("id_import_file_span");
 const input_os_file = document.getElementById("id_import_file_os_file");
-const input_google_file = document.getElementById("id_import_file_google_id");
+const input_google_file_id = document.getElementById("id_import_file_google_id");
+const input_google_file_name = document.getElementById("id_import_file_google_name");
 const input_google_oauth = document.getElementById("id_import_file_google_oauth_token");
 const input_is_google = document.getElementById("id_import_file_is_google");
 
+// relevant HTML elements for subsheet selection
+const select_subsheet = document.getElementById("id_subsheet_name");
 
 
 
@@ -94,7 +97,7 @@ var pickerApiLoaded = false;
 var oauthToken;
 var googleAuth;
 
-// additional variables 'developerKey', 'clientId', and 'appId' are
+// additional variables 'developerKey', 'clientId', 'appId', and 'dummyChoiceTxt' are
 // already set in the 'import.html' template
 
 
@@ -184,19 +187,25 @@ function createPicker() {
 // Function to call once the picker was successfully built.
 function pickerCallback(data) {
     if(data.action == google.picker.Action.PICKED) {
-        input_google_file.value = data.docs[0].id;
+        input_google_file_id.value = data.docs[0].id;
+        input_google_file_name.value = data.docs[0].name;
         input_google_oauth.value = oauthToken;
         span_import.innerHTML = data.docs[0].name + " (1st sheet)";
 
-        /* display all subsheets
+        // display all subsheets
         gapi.client.sheets.spreadsheets.get({
             spreadsheetId: data.docs[0].id
         }).then(function(response) {
-            console.log(response.result.sheets)
+            select_subsheet.innerHTML = "";
+            for(let subsheet_meta of response.result.sheets) {
+                var opt = document.createElement("option");
+                opt.text = subsheet_meta.properties.title;
+                select_subsheet.appendChild(opt);
+                console.log(subsheet_meta.properties.title)
+            }
         }).catch(function(response) {
             console.log('Error: ' + response.result.error.message);
         });
-        */
     }
 }
 

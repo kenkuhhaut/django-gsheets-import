@@ -37,6 +37,11 @@ from django.utils.translation import gettext_lazy as _
 
 
 
+## text to be displayed in the subsheet name selection widget by default
+DUMMY_CHOICE_TXT = '--------'
+
+
+
 
 #################################################
 #                                               #
@@ -61,6 +66,11 @@ class CustomImportForm(forms.Form):
     import_file = forms.FileField(
         label = _('File to import'),
         widget = FileAndGoogleInput
+    )
+    subsheet_name = forms.CharField(
+        label = _('Subsheet name'),
+        widget = forms.Select(choices = (('dummy-choice', DUMMY_CHOICE_TXT),)),
+        required = False
     )
 
     def __init__(self, import_formats, *args, **kwargs):
