@@ -26,6 +26,8 @@
 
 'use strict';
 
+
+
 //
 // Template related variables and functions.
 //
@@ -40,21 +42,6 @@ const input_os_file = document.getElementById("id_import_file_os_file");
 const input_google_file = document.getElementById("id_import_file_google_id");
 const input_google_oauth = document.getElementById("id_import_file_google_oauth_token");
 const input_is_google = document.getElementById("id_import_file_is_google");
-
-// additional variables 'developerKey', 'clientId', and 'appId' are
-// already set in the 'import.html' template
-
-
-
-// add default 'onClick' event for the button
-if(button_import) {
-    button_import.addEventListener("click", loadFilePicker);
-}
-
-// add 'onChange' event for file input tag
-if(input_os_file) {
-    input_os_file.addEventListener("change", updateOSFileName);
-}
 
 
 
@@ -98,51 +85,88 @@ function updateOSFileName(event) {
 // Scope to use to access user's Drive items.
 const scope = 'https://www.googleapis.com/auth/drive.file';
 
+// Discovery document for the Google Sheets API
+const discoveryDoc = ['https://sheets.googleapis.com/$discovery/rest?version=v4'];
+
 // global variables
 var pickerApiLoaded = false;
 var oauthToken;
+var googleAuth;
+
+// additional variables 'developerKey', 'clientId', and 'appId' are
+// already set in the 'import.html' template
 
 
 
-// load the google.picker script and gapi.auth2
-function loadGooglePicker(event) {
-    gapi.load('auth2', {'callback': onAuthApiLoad});
-    gapi.load('picker', {'callback': onPickerApiLoad});
+// Load the necessary libraries (executed once "https://apis.google.com/js/api.js" has finished loading)
+function loadLibraries() {
+    console.log("+++ loadLibraries");
+    gapi.load('client:auth2', {'callback': onClientLoad});
+    gapi.load('picker', {'callback': () => { pickerApiLoaded = true; }});
 }
 
 
-// Function to call once the 'auth2' library has been successfully loaded. It will perform a one time OAuth 2.0 authorization.
-function onAuthApiLoad() {
-    window.gapi.auth2.authorize(
-        {
-            'client_id': clientId,
-            'scope': scope,
-            'immediate': false
-        },
-    handleAuthResult);
+// Initialize the client library (executed once the client and the auth2 libraries have finished loading)
+function onClientLoad() {
+    gapi.client.init({
+        'apiKey': developerKey,
+        'discoveryDocs': discoveryDoc,
+        'clientId': clientId,
+        'scope': scope,
+        'immediate': false
+    }).then(function() {
+        // initialize global GoogleAuth object and assign listener function
+        googleAuth = gapi.auth2.getAuthInstance();
+        googleAuth.isSignedIn.listen(updateSignInStatus);
+    }).then(function() {
+        // add default 'onClick' event for the button
+        if(button_import) {
+            button_import.addEventListener("click", loadFilePicker);
+        }
+        // add 'onChange' event for file input tag
+        if(input_os_file) {
+            input_os_file.addEventListener("change", updateOSFileName);
+        }
+    }).catch(function(error) {
+        // error handling
+        console.log("+++ This somehow failed");
+        console.log(error);
+    })
 }
 
 
-// Function to call once the 'picker' library has been successfully loaded.
-function onPickerApiLoad() {
-    pickerApiLoaded = true;
-    createPicker();
-}
-
-
-// Function to call once the authorization request has been completed (either successfully or with a failure).
-// The 'authResult' argument is an object of class 'gapi.auth2.AuthorizeResponse'.
-function handleAuthResult(authResult) {
-    if (authResult && !authResult.error) {
-        oauthToken = authResult.access_token;
+// Function that is called once the sign-in status changes
+// (argument: true if user is signing in, false if signing out)
+function updateSignInStatus(isSignedIn) {
+    console.log("+++ updateSignInStatus 1" + isSignedIn)
+    if(isSignedIn) {
+        console.log("+++ updateSignInStatus 2")
+        oauthToken = googleAuth.currentUser.get().getAuthResponse().access_token;
         createPicker();
     }
 }
 
 
+// Start the OAuth 2.0 authentication flow if the user is not signed in yet
+function loadGooglePicker(event) {
+    var isSignedIn = googleAuth.isSignedIn.get();
+    console.log("+++ loadGooglePicker 1" + isSignedIn)
+    if(isSignedIn) {
+        oauthToken = googleAuth.currentUser.get().getAuthResponse().access_token;
+    } else {
+        googleAuth.signIn();
+    }
+    createPicker();
+    console.log("+++ loadGooglePicker 2")
+}
+
+//        'discoveryDocs': discoveryDoc,
+
+
 // Create and render a Picker object.
 function createPicker() {
-    if (pickerApiLoaded && oauthToken) {
+    console.log("+++ pickerApiLoaded: " + pickerApiLoaded + " oauthToken: " + oauthToken);
+    if(pickerApiLoaded && oauthToken) {
         var view = new google.picker.View(google.picker.ViewId.SPREADSHEETS);
         var picker = new google.picker.PickerBuilder()
             .enableFeature(google.picker.Feature.NAV_HIDDEN)
@@ -159,9 +183,20 @@ function createPicker() {
 
 // Function to call once the picker was successfully built.
 function pickerCallback(data) {
-    if (data.action == google.picker.Action.PICKED) {
+    if(data.action == google.picker.Action.PICKED) {
         input_google_file.value = data.docs[0].id;
         input_google_oauth.value = oauthToken;
         span_import.innerHTML = data.docs[0].name + " (1st sheet)";
+
+        /* display all subsheets
+        gapi.client.sheets.spreadsheets.get({
+            spreadsheetId: data.docs[0].id
+        }).then(function(response) {
+            console.log(response.result.sheets)
+        }).catch(function(response) {
+            console.log('Error: ' + response.result.error.message);
+        });
+        */
     }
 }
+
