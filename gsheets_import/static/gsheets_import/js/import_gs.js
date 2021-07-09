@@ -164,9 +164,7 @@ function onClientLoad() {
             button_import.disabled = false;
         }
     }).catch(function(error) {
-        // error handling
-        console.log("+++ This somehow failed");
-        console.log(error);
+        console.log("Something went wrong: " + error);
     });
 }
 

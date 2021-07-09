@@ -44,7 +44,7 @@ Obtain credentials
   * Restrictions for the newly created API key do not have to be added for the package to work, but should still be implemented for security reasons.
 
     * Under ``Application restrictions``, select ``HTTP referrers (websites)`` and add an appropriate URL under ``Website restrictions``. Note that this can be skipped during local development and testing.
-    * Under ``API restrictions``, select ``Restrict key`` and choose the Google Picker API from the dropdown menu. The Sheets API does not need the API key and thus does not need to be selected.
+    * Under ``API restrictions``, choose ``Restrict key`` and select both the Google Picker API and the Google Sheets API from the drop-down list.
 
 * The implementation of a proper authentication and authorization workflow requires the creation of **OAuth credentials**. Obtaining those is a two-step process: First, we need to configure the OAuth consent screen. Second, we need to create an appropriate OAuth 2.0 client ID.
 
