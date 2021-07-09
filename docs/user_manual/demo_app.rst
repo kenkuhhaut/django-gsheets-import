@@ -35,7 +35,7 @@ Assuming that Python and pip have already been installed globally or in an appro
 Getting the demo sheet
 ======================
 
-We have prepared a read-only sample Google Sheet, which is publicly available `here <https://docs.google.com/spreadsheets/d/1-VADSGcNxWWbhZxkhpgKZS59lTh6GDJtoriHKaE5arY/edit?usp=sharing>`__.
+We have prepared a read-only sample Google Sheet called **GSheets Import Demo**, which is publicly available `here <https://docs.google.com/spreadsheets/d/1-VADSGcNxWWbhZxkhpgKZS59lTh6GDJtoriHKaE5arY/edit?usp=sharing>`__.
 It contains two tables in two subsheets, one appropriate for each model in the demo project.
 In order to use the sample sheet, click on the above link and sign in with your favorite Google Account (if you haven't done so already).
 The demo sheet should then automatically be available from that account's Google Drive.
@@ -68,9 +68,10 @@ Testing the import feature using the demo app typically amounts to the following
 * Navigate to ``http://localhost:8000`` in your browser and sign in as the Django project's superuser you created above.
 * Both of the models in the project's ``literature`` app were supplemented by the Google Sheets import functionality. Choose one of the models from the sidebar, which brings you to the admin's changelist view. Here, click on the ``IMPORT`` button in the top right corner.
 * The ``Google Sheet`` format is already pre-selected, so click on the ``Select a file...`` button.
-* From the pop-up window, select the same Google Account which you used to access the sample sheets above.
+* From the pop-up window, select the same Google Account which you used to access the sample sheet above.
 * Grant your previously created Google Cloud Project the necessary rights when prompted.
-* Select the appropriate Google Sheet from the Google Picker window.
+* Select the "GSheets Import Demo" sheet from the Google Picker window.
+* Make sure to select the subsheet appropriate for the current model from the corresponding drop-down list.
 * Click on the ``SUBMIT`` button.
 * If you like what you see, click on the ``CONFIRM IMPORT`` button to have the displayed data added to the underlying database.
 

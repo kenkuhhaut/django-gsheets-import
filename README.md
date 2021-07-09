@@ -18,7 +18,7 @@ A more detailed documentation about `django-gsheets-import` is available [here](
 
 ## Installation and configuration
 
-The package and its dependencies can be installed from PyPI via `pip install -U django-gsheets-import`.
+The package and its dependencies can be installed from [PyPI](https://pypi.org/project/django-gsheets-import/) via `pip install -U django-gsheets-import`.
 To use the package in your Django project, just add `import_export` and `gsheets_import` to the list of **installed apps** in your `settings.py`, i.e.
 ```python
 ## in settings.py
