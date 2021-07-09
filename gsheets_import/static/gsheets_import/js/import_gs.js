@@ -32,10 +32,10 @@
 // Template related variables and functions.
 //
 
-// relevant input HTML elements for format selection
+// Relevant input HTML elements for format selection
 const select_format = document.getElementById("id_input_format");
 
-// relevant HTML elements for file selection
+// Relevant HTML elements for file selection
 const button_import = document.getElementById("id_import_file");
 const span_import = document.getElementById("id_import_file_span");
 const input_os_file = document.getElementById("id_import_file_os_file");
@@ -44,39 +44,64 @@ const input_google_file_name = document.getElementById("id_import_file_google_na
 const input_google_oauth = document.getElementById("id_import_file_google_oauth_token");
 const input_is_google = document.getElementById("id_import_file_is_google");
 
-// relevant HTML elements for subsheet selection
+// Relevant HTML elements for subsheet selection
 const select_subsheet = document.getElementById("id_subsheet_name");
 
 
 
 // 'onClick' event of the file select button, which distinguishes the 'Google Sheet' format from all other formats
 function loadFilePicker(event) {
-    const selected_option = select_format.options[select_format.selectedIndex].text
+    const selected_option = select_format.options[select_format.selectedIndex].text;
     // load file picker appropriate for Google Sheet format
     if(selected_option === "Google Sheet") {
-        input_is_google.value = true
-        loadGooglePicker(event)
+        input_is_google.value = true;
+        loadGooglePicker(event);
     // load file picker appropriate for other formats
     } else {
-        input_is_google.value = false
-        loadOSPicker(event)
+        input_is_google.value = false;
+        loadOSPicker(event);
     }
 }
 
 
-// trigger the default 'onClick' event of the input tag (type="file")
+// Trigger the default 'onClick' event of the input tag (type="file")
 function loadOSPicker(event) {
     if(input_os_file) {
+        if(input_google_file_id.value) {
+            clearGoogleSelection();
+        }
         input_os_file.click();
     }
 }
 
 
-// write the currently selected OS file to the span element
+// Write the currently selected OS file to the span element
 function updateOSFileName(event) {
     if(span_import) {
-        span_import.innerHTML = this.files[0].name
+        if(this.files[0]) {
+            span_import.innerHTML = this.files[0].name;
+        } else {
+            span_import.innerHTML = "No file selected.";
+        }
     }
+}
+
+
+// Clear Google Sheets related information
+function clearGoogleSelection() {
+    // reset the displayed file name
+    span_import.innerHTML = "No file selected.";
+
+    // unset/reset input fields
+    input_google_file_id.value = null;
+    input_google_file_name.value = null;
+    input_google_oauth.value = null;
+
+    // reset subsheet selection element
+    var opt = document.createElement("option");
+    opt.value = 'dummy-choice';
+    opt.text = dummyChoiceTxt;
+    select_subsheet.replaceChildren(opt);
 }
 
 
@@ -92,12 +117,12 @@ const scope = 'https://www.googleapis.com/auth/drive.file';
 // Discovery document for the Google Sheets API
 const discoveryDoc = ['https://sheets.googleapis.com/$discovery/rest?version=v4'];
 
-// global variables
+// Global variables
 var pickerApiLoaded = false;
 var oauthToken;
 var googleAuth;
 
-// additional variables 'developerKey', 'clientId', 'appId', and 'dummyChoiceTxt' are
+// Additional variables 'developerKey', 'clientId', 'appId', and 'dummyChoiceTxt' are
 // already set in the 'import.html' template
 
 
@@ -135,7 +160,7 @@ function onClientLoad() {
         // error handling
         console.log("+++ This somehow failed");
         console.log(error);
-    })
+    });
 }
 
 
@@ -195,12 +220,13 @@ function pickerCallback(data) {
         gapi.client.sheets.spreadsheets.get({
             spreadsheetId: data.docs[0].id
         }).then(function(response) {
-            select_subsheet.innerHTML = "";
-            for(let subsheet_meta of response.result.sheets) {
+            var new_options = [];
+            for(var subsheet_meta of response.result.sheets) {
                 var opt = document.createElement("option");
                 opt.text = subsheet_meta.properties.title;
-                select_subsheet.appendChild(opt);
+                new_options.push(opt);
             }
+            select_subsheet.replaceChildren(...new_options);
             button_submit.disabled = false;
         }).catch(function(response) {
             console.log('Error: ' + response.result.error.message);
