@@ -32,12 +32,13 @@ Assuming that Python and pip have already been installed globally or in an appro
 
 
 
-Getting the demo sheets
-=======================
+Getting the demo sheet
+======================
 
-We have prepared two read-only sample Google Sheets (one for each model in the demo project), which are publicly available `here <https://docs.google.com/spreadsheets/d/1DG_mR9hYRiVMt_BYIf2zc0fncFhgFQzLKplwHhEM61Q/edit?usp=sharing>`__ and `here <https://docs.google.com/spreadsheets/d/1dIPYFu0alGeAZzFh0E9y4TfnPU7Z4iqlsdh_sLdyZyA/edit?usp=sharing>`__.
-In order to use them with the demo project, click on the links and sign in with your favorite Google Account (if you haven't done so already).
-The demo sheets should then automatically be available from that account's Google Drive.
+We have prepared a read-only sample Google Sheet, which is publicly available `here <https://docs.google.com/spreadsheets/d/1-VADSGcNxWWbhZxkhpgKZS59lTh6GDJtoriHKaE5arY/edit?usp=sharing>`__.
+It contains two tables in two subsheets, one appropriate for each model in the demo project.
+In order to use the sample sheet, click on the above link and sign in with your favorite Google Account (if you haven't done so already).
+The demo sheet should then automatically be available from that account's Google Drive.
 
 
 
