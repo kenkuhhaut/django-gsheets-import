@@ -3,12 +3,17 @@ from import_export.formats import base_formats
 
 
 
+## Define display name of Google Sheet format
+GS_FORMAT_DISPLAY_NAME = 'Google Sheet'
+
+
+
 ##
 ## Format class to import Google Sheets
 ##
 class GoogleSheet(base_formats.Format):
     def get_title(self):
-        return 'Google Sheet'
+        return GS_FORMAT_DISPLAY_NAME
 
     def create_dataset(self, in_stream):
         return import_set(in_stream, format='csv')

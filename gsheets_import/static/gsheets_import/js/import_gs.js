@@ -26,6 +26,16 @@
 
 'use strict';
 
+//
+// Additional variables already set in the 'import.html' and 'file_and_google.html' templates are:
+//      * developerKey
+//      * clientId
+//      * appId
+//      * gsFormatDisplayName
+//      * dummyChoiceTxt
+//      * noFileTxt
+//
+
 
 
 //
@@ -53,7 +63,7 @@ const select_subsheet = document.getElementById("id_subsheet_name");
 function loadFilePicker(event) {
     const selected_option = select_format.options[select_format.selectedIndex].text;
     // load file picker appropriate for Google Sheet format
-    if(selected_option === "Google Sheet") {
+    if(selected_option === gsFormatDisplayName) {
         input_is_google.value = true;
         loadGooglePicker(event);
     // load file picker appropriate for other formats
@@ -81,7 +91,7 @@ function updateOSFileName(event) {
         if(this.files[0]) {
             span_import.innerHTML = this.files[0].name;
         } else {
-            span_import.innerHTML = "No file selected.";
+            span_import.innerHTML = noFileTxt;
         }
     }
 }
@@ -90,7 +100,7 @@ function updateOSFileName(event) {
 // Clear Google Sheets related information
 function clearGoogleSelection() {
     // reset the displayed file name
-    span_import.innerHTML = "No file selected.";
+    span_import.innerHTML = noFileTxt;
 
     // unset/reset input fields
     input_google_file_id.value = null;
@@ -121,9 +131,6 @@ const discoveryDoc = ['https://sheets.googleapis.com/$discovery/rest?version=v4'
 var pickerApiLoaded = false;
 var oauthToken;
 var googleAuth;
-
-// Additional variables 'developerKey', 'clientId', 'appId', and 'dummyChoiceTxt' are
-// already set in the 'import.html' template
 
 
 

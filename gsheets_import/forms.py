@@ -40,6 +40,9 @@ from django.utils.translation import gettext_lazy as _
 ## text to be displayed in the subsheet name selection widget by default
 DUMMY_CHOICE_TXT = '--------'
 
+## text to be displayed next to the file selection button if no file is selected
+NO_FILE_TXT = 'No file selected.'
+
 
 
 
@@ -52,6 +55,11 @@ DUMMY_CHOICE_TXT = '--------'
 ## slightly modified FileInput widget to use a customized template
 class FileAndGoogleInput(forms.widgets.FileInput):
     template_name = 'forms/widgets/file_and_google.html'
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['no_file_txt'] = NO_FILE_TXT
+        return context
 
 
 

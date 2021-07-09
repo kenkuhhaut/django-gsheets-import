@@ -11,7 +11,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from import_export.admin import ImportMixin, ExportMixin
 
 from . import forms
-from .google_sheet_format import DEFAULT_FORMATS_EXT
+from .google_sheet_format import DEFAULT_FORMATS_EXT, GS_FORMAT_DISPLAY_NAME
 
 
 
@@ -91,6 +91,7 @@ class ImportGoogleMixin(ImportMixin):
         if len(failed_settings_vars) > 0:
             raise AttributeError("Variables in settings.py related to the Google Sheet import app not set correctly (" + ', '.join(failed_settings_vars) + ').')
         else:
+            context['gs_format_display_name'] = GS_FORMAT_DISPLAY_NAME
             context['dummy_choice_txt'] = forms.DUMMY_CHOICE_TXT
             context.update(gsheets_import_context)
             return context
@@ -98,7 +99,7 @@ class ImportGoogleMixin(ImportMixin):
 
     ## extended version of the import_action method to download the specified Google Sheet in CSV format
     def import_action(self, request, *args, **kwargs):
-        ## process google sheet
+        ## process Google Sheet
         if request.POST and request.POST.get('is_google') == 'true':
             ## only proceed if the required data was sent and is not empty
             if all([ (key in request.POST) and (request.POST[key] != '') for key in POST_REQUEST_KEYS ]):
