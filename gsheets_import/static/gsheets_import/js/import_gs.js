@@ -223,7 +223,8 @@ function pickerCallback(data) {
 
         // display all subsheets
         gapi.client.sheets.spreadsheets.get({
-            spreadsheetId: data.docs[0].id
+            spreadsheetId: data.docs[0].id,
+            includeGridData: false
         }).then(function(response) {
             var new_options = [];
             for(var subsheet_meta of response.result.sheets) {
