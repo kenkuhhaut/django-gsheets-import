@@ -18,6 +18,7 @@ class AuthorAdmin(ImportGoogleModelAdmin):
 ##
 class WorkAdmin(ImportGoogleModelAdmin):
     resource_class = WorkResource
+    import_example_sheet_link = 'https://docs.google.com/spreadsheets/d/1-VADSGcNxWWbhZxkhpgKZS59lTh6GDJtoriHKaE5arY/edit#gid=1386862396'
 
 
 

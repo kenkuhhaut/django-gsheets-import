@@ -79,6 +79,10 @@ class ImportGoogleMixin(ImportMixin):
     ## available import formats
     formats = DEFAULT_FORMATS_EXT
 
+    ## link to an example sheet that is shown on the import page
+    ## (An empty string or None implies that the example text + link is not shown)
+    import_example_sheet_link = None
+
     ## use the customized import template instead of the default one
     def get_import_form(self):
         return forms.CustomImportForm
@@ -93,6 +97,7 @@ class ImportGoogleMixin(ImportMixin):
         else:
             context['gs_format_display_name'] = GS_FORMAT_DISPLAY_NAME
             context['dummy_choice_txt'] = forms.DUMMY_CHOICE_TXT
+            context['import_example_sheet_link'] = self.import_example_sheet_link
             context.update(gsheets_import_context)
             return context
 

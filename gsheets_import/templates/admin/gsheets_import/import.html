@@ -77,6 +77,12 @@
         <code>{{ fields|join:", " }}</code>
       </p>
 
+      {% if import_example_sheet_link %}
+        <p>
+          An example Google Sheet with the correct format can be found <a href="{{ import_example_sheet_link }}" target="_blank">here</a>.
+        </p>
+      {% endif %}
+
       <fieldset class="module aligned">
         {% for field in form %}
           <div class="form-row">
